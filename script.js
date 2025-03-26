@@ -78,9 +78,9 @@ const displayMovements = function (movements) {
   });
 };
 
-const calcDisplayBalance = function (movements) {
-  const balance = movements.reduce((acc, curr) => acc + curr);
-  labelBalance.textContent = `${balance} Rupees`;
+const calcDisplayBalance = function (acc) {
+  acc.balance = acc.movements.reduce((acc, curr) => acc + curr);
+  labelBalance.textContent = `${acc.balance} Rupees`;
 };
 
 const displaySUmmary = function (acc) {
@@ -113,6 +113,15 @@ const createUsernames = function (accts) {
   });
 };
 createUsernames(accounts);
+
+const updateUI = function (acc) {
+  //DISPLAY MOVEMENTS
+  displayMovements(acc.movements);
+  //DISPLAY BALNCE
+  calcDisplayBalance(acc);
+  //DISPLAY SUMMARY
+  displaySUmmary(acc);
+};
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
@@ -141,11 +150,26 @@ btnLogin.addEventListener('click', e => {
     containerApp.style.opacity = 100;
 
     inputLoginPin.value = inputLoginUsername.value = '';
-    //DISPLAY MOVEMENTS
-    displayMovements(currentAccount.movements);
-    //DISPLAY BALNCE
-    calcDisplayBalance(currentAccount.movements);
-    //DISPLAY SUMMARY
-    displaySUmmary(currentAccount);
+    updateUI(currentAccount);
+  }
+});
+
+btnTransfer.addEventListener('click', function (e) {
+  e.preventDefault();
+  const amount = Number(inputTransferAmount.value);
+  const recieverAcc = accounts.find(
+    acc => acc.username === inputTransferTo.value
+  );
+  inputTransferAmount.value = inputTransferTo.value = '';
+
+  if (
+    amount > 0 &&
+    recieverAcc &&
+    currentAccount.balance >= amount &&
+    recieverAcc?.username !== currentAccount.username
+  ) {
+    currentAccount.movements.push(-amount);
+    recieverAcc.movements.push(amount);
+    updateUI(currentAccount);
   }
 });
