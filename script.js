@@ -73,7 +73,7 @@ const displayMovements = function (movements, sort = false) {
       i + 1
     } ${type} </div>
           
-          <div class="movements__value">${mov}</div>
+          <div class="movements__value">${mov.toFixed(2)}</div>
         </div>
     `;
     containerMovements.insertAdjacentHTML('afterbegin', html);
@@ -82,14 +82,14 @@ const displayMovements = function (movements, sort = false) {
 
 const calcDisplayBalance = function (acc) {
   acc.balance = acc.movements.reduce((acc, curr) => acc + curr);
-  labelBalance.textContent = `${acc.balance} Rupees`;
+  labelBalance.textContent = `${acc.balance.toFixed(2)} Rupees`;
 };
 
 const displaySUmmary = function (acc) {
   const income = acc.movements
     .filter(mov => mov > 0)
     .reduce((acc, mov) => acc + mov, 0);
-  labelSumIn.textContent = `${income}`;
+  labelSumIn.textContent = `${income.toFixed(2)}`;
   const out = acc.movements
     .filter(mov => mov < 0)
     .reduce((acc, mov) => acc + mov, 0);
@@ -99,7 +99,7 @@ const displaySUmmary = function (acc) {
     .map(deposit => (deposit * acc.interestRate) / 100)
     .filter(int => int > 1)
     .reduce((acc, int) => acc + int, 0);
-  labelSumInterest.textContent = `${interest}`;
+  labelSumInterest.textContent = `${interest.toFixed(2)}`;
   console.log(income);
   console.log(out);
   console.log(interest);
@@ -158,7 +158,7 @@ btnLogin.addEventListener('click', e => {
 
 btnTransfer.addEventListener('click', function (e) {
   e.preventDefault();
-  const amount = Number(inputTransferAmount.value);
+  const amount = Math.floor(Number(inputTransferAmount.value));
   const recieverAcc = accounts.find(
     acc => acc.username === inputTransferTo.value
   );
@@ -212,4 +212,12 @@ btnSort.addEventListener('click', function (e) {
 
   displayMovements(currentAccount.movements, !sorted);
   sorted = !sorted;
+});
+
+labelBalance.addEventListener('click', function () {
+  const movementsUI = Array.from(
+    document.querySelectorAll('.movements__value'),
+    el => Number(el.textContent.replace('Rupees', ''))
+  );
+  console.log(movementsUI);
 });
