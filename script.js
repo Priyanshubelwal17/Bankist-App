@@ -93,7 +93,7 @@ const displaySUmmary = function (acc) {
   const out = acc.movements
     .filter(mov => mov < 0)
     .reduce((acc, mov) => acc + mov, 0);
-  labelSumOut.textContent = `${out}`;
+  labelSumOut.textContent = `${Math.abs(out).toFixed(2)}`;
   const interest = acc.movements
     .filter(mov => mov > 0)
     .map(deposit => (deposit * acc.interestRate) / 100)
@@ -220,4 +220,13 @@ labelBalance.addEventListener('click', function () {
     el => Number(el.textContent.replace('Rupees', ''))
   );
   console.log(movementsUI);
+});
+
+labelBalance.addEventListener('click', function () {
+  [...document.querySelectorAll('.movements__row')].forEach(function (row, i) {
+    if (i % 2 === 0) row.style.backgroundColor = 'orange';
+    if (i % 2 !== 0) row.style.backgroundColor = 'blue';
+
+    if (i % 3 === 0) row.style.backgroundColor = 'red';
+  });
 });
