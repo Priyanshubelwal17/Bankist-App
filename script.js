@@ -191,7 +191,7 @@ let currentAccount;
 //FAKE Login
 currentAccount = account1;
 updateUI(currentAccount);
-containerApp.style.opacity = 0;
+containerApp.style.opacity = 100;
 
 //EXPERIMENTING  API
 
@@ -249,12 +249,14 @@ btnTransfer.addEventListener('click', function (e) {
     currentAccount.balance >= amount &&
     recieverAcc?.username !== currentAccount.username
   ) {
-    currentAccount.movements.push(-amount);
-    recieverAcc.movements.push(amount);
+    setTimeout(() => {
+      currentAccount.movements.push(-amount);
+      recieverAcc.movements.push(amount);
 
-    currentAccount.movementsDates.push(new Date().toISOString());
-    recieverAcc.movementsDates.push(new Date().toISOString());
-    updateUI(currentAccount);
+      currentAccount.movementsDates.push(new Date().toISOString());
+      recieverAcc.movementsDates.push(new Date().toISOString());
+      updateUI(currentAccount);
+    }, 2500);
   }
 });
 
@@ -263,10 +265,12 @@ btnLoan.addEventListener('click', function (e) {
   const amount = Number(inputLoanAmount.value);
 
   if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
-    currentAccount.movements.push(amount);
-    currentAccount.movementsDates.push(new Date().toISOString());
-    updateUI(currentAccount);
-    inputLoanAmount.value = '';
+    setTimeout(() => {
+      currentAccount.movements.push(amount);
+      currentAccount.movementsDates.push(new Date().toISOString());
+      updateUI(currentAccount);
+      inputLoanAmount.value = '';
+    }, 2500);
   }
 });
 
