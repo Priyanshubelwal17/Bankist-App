@@ -214,15 +214,15 @@ nav {
 }
 
 .operation--transfer {
-  background-image: linear-gradient(to top left, #ffb003, #ffcb03);
+  background-image: linear-gradient(to top, #8b9467 0%, #c9d6b6 100%);
 }
 
 .operation--loan {
-  background-image: linear-gradient(to top left, #39b385, #9be15d);
+  background-image: linear-gradient(to top, #f1c40f 0%, #2ecc71 100%);
 }
 
 .operation--close {
-  background-image: linear-gradient(to top left, #e52a5a, #ff585f);
+  background-image: linear-gradient(to top, #ff69b4 0%, #ff3737 100%);
 }
 
 h2 {

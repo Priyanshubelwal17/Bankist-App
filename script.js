@@ -10,23 +10,23 @@
 // DIFFERENT DATA! Contains movement dates, currency and locale
 
 const account1 = {
-  owner: 'Jonas Schmedtmann',
-  movements: [200, 455.23, -306.5, 25000, -642.21, -133.9, 79.97, 1300],
+  owner: 'Priyanshu Belwal',
+  movements: [200, 4552300, -306.5, 25000, -642.21, -133.9, 79.97, 1300],
   interestRate: 1.2, // %
   pin: 1111,
 
   movementsDates: [
-    '2019-01-15T10:05:33.035Z', // January 2019
+    '2010-01-20T14:18:46.235Z', // February 2020
     '2020-02-20T14:18:46.235Z', // February 2020
     '2020-03-20T14:18:46.235Z', // February 2020
     '2022-04-05T06:04:23.907Z', // April 2022
     '2023-01-25T12:30:50.386Z', // January 2023
     '2024-02-15T18:45:59.371Z', // February 2024
-    '2024-02-15T18:45:59.371Z', // February 2024
-    '2025-04-10T08:33:26.374Z', // April 2025
+    '2024-03-15T18:45:59.371Z', // February 2024
+    '2025-02-10T08:33:26.374Z', // April 2025
   ],
-  currency: 'EUR',
-  locale: 'pt-PT', // de-DE
+  currency: 'INR',
+  locale: 'en-IN', // de-DE
 };
 
 const account2 = {
@@ -86,7 +86,6 @@ const formatMovementDate = (date, locale) => {
     Math.round(Math.abs((date2 - date1) / (1000 * 60 * 60 * 24)));
 
   const daysPassed = calcDaysPassed(new Date(), date);
-
   if (daysPassed === 0) return 'Today';
   if (daysPassed === 1) return 'Yesterday';
   if (daysPassed <= 7) return `${calcDaysPassed} days ago`;
@@ -139,25 +138,28 @@ const displayMovements = function (acc, sort = false) {
 };
 
 const calcDisplayBalance = function (acc) {
-  acc.balance = acc.movements.reduce((acc, curr) => acc + curr);
-  labelBalance.textContent = `${acc.balance.toFixed(2)} Rupees`;
+  acc.balance = acc.movements.reduce((acc, curr) => acc + curr, 0);
+
+  labelBalance.textContent = formatCur(acc.balance, acc.locale, acc.currency);
 };
 
 const displaySUmmary = function (acc) {
   const income = acc.movements
     .filter(mov => mov > 0)
     .reduce((acc, mov) => acc + mov, 0);
-  labelSumIn.textContent = `${income.toFixed(2)}`;
+  labelSumIn.textContent = formatCur(income, acc.locale, acc.currency);
   const out = acc.movements
     .filter(mov => mov < 0)
     .reduce((acc, mov) => acc + mov, 0);
-  labelSumOut.textContent = `${Math.abs(out).toFixed(2)}`;
+  // labelSumOut.textContent = `${Math.abs(out).toFixed(2)}`;
+  labelSumOut.textContent = formatCur(Math.abs(out), acc.locale, acc.currency);
   const interest = acc.movements
     .filter(mov => mov > 0)
     .map(deposit => (deposit * acc.interestRate) / 100)
     .filter(int => int > 1)
     .reduce((acc, int) => acc + int, 0);
-  labelSumInterest.textContent = `${interest.toFixed(2)}`;
+  // labelSumInterest.textContent = `${interest.toFixed(2)}`;
+  labelSumInterest.textContent = formatCur(interest, acc.locale, acc.currency);
   console.log(income);
   console.log(out);
   console.log(interest);
@@ -189,7 +191,7 @@ let currentAccount;
 //FAKE Login
 currentAccount = account1;
 updateUI(currentAccount);
-containerApp.style.opacity = 100;
+containerApp.style.opacity = 0;
 
 //EXPERIMENTING  API
 
@@ -305,9 +307,15 @@ labelBalance.addEventListener('click', function () {
 
 labelBalance.addEventListener('click', function () {
   [...document.querySelectorAll('.movements__row')].forEach(function (row, i) {
-    if (i % 2 === 0) row.style.backgroundColor = 'orange';
-    if (i % 2 !== 0) row.style.backgroundColor = 'blue';
+    if (i % 2 === 0)
+      row.style.backgroundImage =
+        'linear-gradient(to top, #f7f7f7 0%, #e5e5e5 100%) ';
+    if (i % 2 !== 0)
+      row.style.backgroundImage =
+        'linear-gradient(to top, #ecf0f1 0%, #bdc3c7 100%)';
 
-    if (i % 3 === 0) row.style.backgroundColor = 'red';
+    if (i % 3 === 0)
+      row.style.backgroundImage =
+        'linear-gradient(to top, #d9d9d9 0%, #c7c5c5 100%)';
   });
 });
